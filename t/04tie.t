@@ -7,60 +7,33 @@
 # Change 1..1 below to 1..last_test_to_print .
 # (It may become useful if the test is moved to ./t subdirectory.)
 
-BEGIN { $| = 1; print "1..5\n"; }
-END {print "not ok 1\n" unless $loaded;}
+use Test::More tests => 4;
 use Clone::Fast qw( clone );
-$loaded = 1;
-print "ok 1\n";
+use strict;
 
 ######################### End of black magic.
 
-my $test = 2;
-
-require 't/dump.pl';
 require 't/tied.pl';
 
 my ($a, @a, %a);
-tie $a, TIED_SCALAR;
-tie %a, TIED_HASH;
-tie @a, TIED_ARRAY;
+tie $a, 'TIED_SCALAR';
+tie %a, 'TIED_HASH';
+tie @a, 'TIED_ARRAY';
 $a{a} = 0;
 $a{b} = 1;
 
 my $b = [\%a, \@a, \$a]; 
-
 my $c = clone($b);
-
-my $d1 = &dump($b);
-my $d2 = &dump($c);
-
-print "not" unless $d1 eq $d2;
-print "ok ", $test++, "\n";
+is_deeply( $c, $b );
 
 my $t1 = tied(%{$b->[0]});
 my $t2 = tied(%{$c->[0]});
-
-$d1 = &dump($t1);
-$d2 = &dump($t2);
-
-print "not" unless $d1 eq $d2;
-print "ok ", $test++, "\n";
+is_deeply( $t1, $t2 );
 
 $t1 = tied(@{$b->[1]});
 $t2 = tied(@{$c->[1]});
-
-$d1 = &dump($t1);
-$d2 = &dump($t2);
-
-print "not" unless $d1 eq $d2;
-print "ok ", $test++, "\n";
+is_deeply( $t1, $t2 );
 
 $t1 = tied(${$b->[2]});
 $t2 = tied(${$c->[2]});
-
-$d1 = &dump($t1);
-$d2 = &dump($t2);
-
-print "not" unless $d1 eq $d2;
-print "ok ", $test++, "\n";
-
+is_deeply( $t1, $t2 );

@@ -1,27 +1,18 @@
-# Working version
-# $Revision: 1.1 $ $Date: 2006/07/14 03:10:13 $
 package Clone::Fast;
 
 use strict;
 
-use Exporter;
+use Exporter 'import';
 use XSLoader;
 
-use vars qw(
-	@ISA @EXPORT @EXPORT_OK
-	$VERSION $BREAK_REFS $CIRCULAR_ACTION $ALLOW_HOOKS $IGNORE_CIRCULAR
-);
-
-@ISA             = qw( Exporter );
-@EXPORT          = qw( );
-@EXPORT_OK       = qw( clone );
-$VERSION         = '0.90.1';
+our @EXPORT_OK = qw( clone );
+our $VERSION   = '0.91';
 
 # Configuration variables
-$BREAK_REFS      = 0;
-$IGNORE_CIRCULAR = 0;
-$CIRCULAR_ACTION = 0;
-$ALLOW_HOOKS     = 1;
+our $BREAK_REFS      = 0;
+our $IGNORE_CIRCULAR = 0;
+our $CIRCULAR_ACTION = 0;
+our $ALLOW_HOOKS     = 1;
 
 XSLoader::load( 'Clone::Fast', $VERSION );
 

@@ -1,40 +1,44 @@
+use strict;
+use warnings;
+use Test::More;
 
-use Test::More qw( no_plan );
+my @structures;
 
-use Data::Dumper;
+BEGIN {
+    @structures = (
+        1,
+        '1',
+        1.0,
+        '1.0',
+        [qw( one )],
+        [qw( one two three four five )],
+        { 'key' => 'value' },
+        { 'key' => { 'key' => 'value' } },
+
+        # More complex
+        [   {   'key' => {
+                    'arr' => [qw( some thing here )],
+                    'AoH' =>
+                        [ { 'a' => { 'b' => { 'c' => { 'd' => 'e' } } } } ],
+                }
+            },
+            [   [   'key' => {
+                        'arr' => [qw( some thing here )],
+                        'AoH' => [
+                            { 'a' => { 'b' => { 'c' => { 'd' => 'e' } } } }
+                        ],
+                    }
+                ],
+            ],
+        ],
+    );
+    plan( tests => 1 + @structures );
+}
+
 use Clone::Fast qw( clone );
-use_ok( 'Clone::Fast' );
+use_ok('Clone::Fast');
 
-my $structures = [
-	1,
-	'1',
-	1.0,
-	'1.0',
-	[ qw( one ) ],
-	[ qw( one two three four five ) ],
-	{ 'key' => 'value' },
-	{ 'key' => { 'key' => 'value' } },
-
-	# More complex
-	[
-		{
-			'key' => {
-				'arr' => [ qw( some thing here ) ],
-				'AoH' => [ { 'a' => { 'b' => { 'c' => { 'd' => 'e' } } } } ],
-			}
-		},
-		[
-			[
-				'key' => {
-					'arr' => [ qw( some thing here ) ],
-					'AoH' => [ { 'a' => { 'b' => { 'c' => { 'd' => 'e' } } } } ],
-				}
-			],
-		],
-	],
-];
-
-for ( @$structures ) {
-	ok( $_, 'Some structure was gathered' );
-	is_deeply( $_, clone( $_ ), join( ' ', 'A', ref( $_ ), qw( structure was cloned appropriately ) ) );
+for (@structures) {
+    is_deeply( $_, clone($_),
+        join( ' ', 'A', ref($_), qw( structure was cloned appropriately ) ) );
 }

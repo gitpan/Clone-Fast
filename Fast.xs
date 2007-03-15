@@ -123,22 +123,32 @@ static SV * no_clone( SV * );
 // data type to the enumerated-ish cloning function
 typedef SV * ( * sv_clone_t )( SV * source );
 static sv_clone_t sv_clone_table[] = {
-	(sv_clone_t)clone_sv,   // SvNULL
-	(sv_clone_t)clone_sv,   // SvIV
-	(sv_clone_t)clone_sv,   // SvNV
-	(sv_clone_t)clone_rv,   // SvRV
-	(sv_clone_t)clone_sv,   // SvPV
-	(sv_clone_t)clone_sv,   // SvPVIV
-	(sv_clone_t)clone_sv,   // SvPVIVNV
-    (sv_clone_t)clone_sv,   // PV & Magic	
-    (sv_clone_t)no_clone,   // PV & BM	
-    (sv_clone_t)no_clone,   // PV & lvalue	
-	(sv_clone_t)clone_av,   // SvAV
-	(sv_clone_t)clone_hv,   // SvHV
-    (sv_clone_t)no_clone,   // SvCV	
-    (sv_clone_t)no_clone,   // SvGV	
-    (sv_clone_t)no_clone,   // FORMAT
-    (sv_clone_t)no_clone,   // IO Stream
+	(sv_clone_t)clone_sv,   // SVt_NULL
+#if PERL_VERSION >= 9
+	(sv_clone_t)no_clone,   // SVt_BIND
+#endif
+	(sv_clone_t)clone_sv,   // SVt_IV
+	(sv_clone_t)clone_sv,   // SVt_NV
+	(sv_clone_t)clone_rv,   // SVt_RV
+	(sv_clone_t)clone_sv,   // SVt_PV
+	(sv_clone_t)clone_sv,   // SVt_PVIV
+	(sv_clone_t)clone_sv,   // SVt_PVNV
+	(sv_clone_t)clone_sv,   // SVt_PVMG
+#if PERL_VERSION <= 8
+	(sv_clone_t)no_clone,   // SVt_PVBM
+#endif
+#if PERL_VERSION >= 9
+	(sv_clone_t)no_clone,   // SVt_GV
+#endif
+	(sv_clone_t)no_clone,   // SVt_PVLV
+	(sv_clone_t)clone_av,   // SVt_PVAV
+	(sv_clone_t)clone_hv,   // SVt_PVHV
+	(sv_clone_t)no_clone,   // SVt_CV
+#if PERL_VERSION <= 8
+	(sv_clone_t)no_clone,   // SVt_GV	
+#endif
+	(sv_clone_t)no_clone,   // SVt_FM
+	(sv_clone_t)no_clone,   // SVt_IO
 };
 
 // Simple accessor into the sv_clone[] table //
@@ -337,13 +347,13 @@ static SV * mg_clone( SV * source ) {
 	//      copying of magic crap.  Though it seems to work ;)
 	//
 	switch( SvTYPE( source ) ) {
-		case 3:
+		case SVt_RV:
 			clone = newSV(0);
 			sv_upgrade( clone, 3 );
-		case 10:
+		case SVt_PVAV:
 			clone = (SV*)newAV();
 			break;
-		case 11: 
+		case SVt_PVHV: 
 			clone = (SV*)newHV();
 			break;
 		default:
@@ -455,17 +465,17 @@ static bool sv_deeply_circular( SV * source ) {
 		return TRUE;
 
 	switch( SvTYPE( source ) ) {
-		case  3: // SvRV
+		case  SVt_RV:
 			return sv_deeply_circular( SvRV( source ) );
 			break;
-		case 10: // SvAV
+		case SVt_PVAV:
 			for ( i = 0; i <= av_len( (AV*)source ); i++ ) {
 				av_elem = av_fetch( (AV*)source, i, 0 );
 				if ( av_elem && sv_deeply_circular( *av_elem ) )
 					return TRUE;	
 			}
 			break;
-		case 11: // SvHV
+		case SVt_PVHV:
 			hv_iterinit( (HV*)source );
 			while ( hv_iter = hv_iternext( (HV*)source ) ) {
 				hv_val = hv_iterval( (HV*)source, hv_iter );	

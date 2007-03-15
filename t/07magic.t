@@ -17,7 +17,7 @@ SKIP: {
     my $y = $x;
     weaken($y);
     my $z = Clone::Fast::clone($x);
-    ok( Dumper($x) eq Dumper($z), "Cloned weak reference");
+    is_deeply( $x, $z, "Cloned weak reference");
   }
 }
 
@@ -33,5 +33,5 @@ SKIP: {
   }
   my $y = Clone::Fast::clone($x);
   ## ok(Clone::Fast::clone($tainted), "Tainted input");
-  ok( Dumper($x) eq Dumper($y), "Tainted input");
+  is_deeply( $x, $y, "Tainted input");
 }

@@ -17,3 +17,4 @@ t/dclone.t
 t/dump.pl
 t/tied.pl
 lib/Clone/Fast.pm
+META.yml                                 Module meta-data (added by MakeMaker)
