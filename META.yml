@@ -1,9 +1,9 @@
 --- #YAML:1.0
 name:                Clone-Fast
-version:             0.91
+version:             0.92
 abstract:            Natively copying Perl data structures
 license:             ~
-generated_by:        ExtUtils::MakeMaker version 6.32_01
+generated_by:        ExtUtils::MakeMaker version 6.31
 distribution_type:   module
 requires:     
     Test::More:                    0

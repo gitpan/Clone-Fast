@@ -2,11 +2,7 @@ package Clone::Fast;
 
 use strict;
 
-use Exporter 'import';
-use XSLoader;
-
-our @EXPORT_OK = qw( clone );
-our $VERSION   = '0.91';
+our $VERSION = '0.92';
 
 # Configuration variables
 our $BREAK_REFS      = 0;
@@ -14,6 +10,11 @@ our $IGNORE_CIRCULAR = 0;
 our $CIRCULAR_ACTION = 0;
 our $ALLOW_HOOKS     = 1;
 
+use Exporter;
+*import = \&Exporter::import;
+our @EXPORT_OK = qw( clone );
+
+use XSLoader;
 XSLoader::load( 'Clone::Fast', $VERSION );
 
 2 != 42;
