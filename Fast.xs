@@ -5,7 +5,7 @@
 
 // All the behaviroal definitions begin and end here.  For more
 // infomration on these definitions, please review the POD
-//#define TRACE_LOG
+// #define TRACE_LOG
 #define MINDFUL_REFS
 //#define MINDFUL_CIR
 #define ALLOW_HOOKS
@@ -362,7 +362,7 @@ static SV * mg_clone( SV * source ) {
 	clone = SvREFCNT_inc( clone ); // Boink!
 
 	for ( mg = SvMAGIC( source ); mg; mg = mg->mg_moremagic ) {
-		SV    * obj;
+		SV    * obj = Nullsv;
 		
 		// How magic is it?	
 		switch (mg->mg_type) {
@@ -381,7 +381,9 @@ static SV * mg_clone( SV * source ) {
 			default:
 				// TBD: Do we need to store this now, or will sv_clone() take
 				//      care of it??
-				obj = sv_clone( mg->mg_obj );
+				if ( mg->mg_obj ) {
+					obj = sv_clone( mg->mg_obj );
+				}
 		}
 		mg_flg = TRUE;
 

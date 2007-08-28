@@ -2,8 +2,8 @@
 
 use strict;
 
-use Clone::Fast;
-use Test::More tests => 2;
+use Clone::Fast qw( clone );
+use Test::More tests => 3;
 
 SKIP: {
   eval "use Data::Dumper";
@@ -35,3 +35,9 @@ SKIP: {
   ## ok(Clone::Fast::clone($tainted), "Tainted input");
   is_deeply( $x, $y, "Tainted input");
 }
+
+# This would segfault in the past.
+$_ = 'I really like to clone magic';
+pos() = 0;
+clone( $_ );
+pass( "Cloned variable with pos() magic" );
