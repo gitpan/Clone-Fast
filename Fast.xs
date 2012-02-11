@@ -104,6 +104,7 @@ bool ignore_circular;
 #define MAGIC_TAINT   't'
 #define MAGIC_BACKREF '<'
 #define MAGIC_USERDEF '~'
+#define MAGIC_ARYLEN  '@'
 
 // Primary and recursive cloning functions
 static SV * sv_clone( SV *         );
@@ -376,11 +377,13 @@ static SV * mg_clone( SV * source ) {
 				continue;
 				break;
 			case MAGIC_USERDEF:
+			case MAGIC_ARYLEN:
 				obj = mg->mg_obj;
 				break;
 			default:
 				// TBD: Do we need to store this now, or will sv_clone() take
 				//      care of it??
+ 				PerlIO_printf(PerlIO_stderr(), "mg=%#x mg_type=%d\n", mg, mg->mg_type);
 				if ( mg->mg_obj ) {
 					obj = sv_clone( mg->mg_obj );
 				}

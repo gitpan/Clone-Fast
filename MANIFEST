@@ -15,5 +15,7 @@ t/06refcnt.t
 t/07magic.t
 t/20hooks.t
 t/dump.pl
+t/rt-37174.t
 t/tied.pl
 META.yml                                 Module meta-data (added by MakeMaker)
+META.json                                Module JSON meta-data (added by MakeMaker)
