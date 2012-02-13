@@ -11,6 +11,8 @@ Fri Feb 10 21:48:38 PST
 	Version 0.94
 		Don't infinite recurse on @ magic..
 
+Sun Feb 12 17:43:44 PST
+    Version 0.96
+        Remove debugging code
 
-
-
+   

@@ -383,7 +383,6 @@ static SV * mg_clone( SV * source ) {
 			default:
 				// TBD: Do we need to store this now, or will sv_clone() take
 				//      care of it??
- 				PerlIO_printf(PerlIO_stderr(), "mg=%#x mg_type=%d\n", mg, mg->mg_type);
 				if ( mg->mg_obj ) {
 					obj = sv_clone( mg->mg_obj );
 				}
