@@ -19,3 +19,6 @@ Fri Sep 21 11:49:43 PDT 2012
     Version 0.96.1
         Moved to public repository
 
+Mon Oct  1 14:32:06 PDT 2012
+    Version 0.96.2
+        Update to META files, allowing for proper install

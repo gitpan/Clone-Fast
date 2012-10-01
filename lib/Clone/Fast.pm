@@ -2,7 +2,7 @@ package Clone::Fast;
 
 use strict;
 
-our $VERSION = '0.96';
+our $VERSION = '0.96.2';
 
 # Configuration variables
 our $BREAK_REFS      = 0;
@@ -69,16 +69,6 @@ begin to see the reason why I loaded this module along side of L<Clone::More>.
 
 For more information relative to the DESCRIPTION of this module, I recommend peeking into
 the POD written for L<Clone::More> (I took more time with it ;) )
-
-=head2 HISTORY
-
-As noted in L<Clone::More>, this module started as a patch for L<Clone> with repsect to a
-large memory leak a team I was working closely with at the time fell across once implemented
-the cloning into a Perl application.  The unfortunate part is that I wasn't able to patch the
-L<Clone> module without a complete re-factor (I still have no idea where the leak is in Clone),
-and have not been able to get ahold of Ray Finch, the current author and supporter of L<Clone>.
-Every thing considered, I loaded up this and it's counter part L<Clone::More> - both a little
-different from one another, and both a little different from L<Clone> still.
 
 =head2 EXPORT
 
@@ -344,12 +334,7 @@ well, yet is very slow.  Subsiquently, Storable, as of Perl 5.8, is CORE; and ma
 
 =item L<Clone>
 
-The 'basis' of C<Clone::Fast>, where L<Clone> is simply a very optimized version of C<Clone::Fast>.  Where hooks, some
-exported routines and advanced functionality have been removed.
-
-=item L<Clone::More>
-
-The counter-part and un-optimized version of L<Clone::Fast>
+The original concept of C<Clone::Fast>.
 
 =back
 
@@ -359,9 +344,10 @@ Trevor Hall, E<lt>wazzuteke@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2006 by Trevor Hall
+Copyright (C) 2006-2012 by Trevor Hall
 
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+This is free software, licensed under:
+
+    The Artistic License 2.0 (GPL Compatible)
 
 =cut
